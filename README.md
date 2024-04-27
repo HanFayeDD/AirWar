@@ -1,3 +1,2 @@
 # AircraftWar
-## newline
 
