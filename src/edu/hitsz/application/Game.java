@@ -168,6 +168,7 @@ public class Game extends JPanel {
                 DATA.doADD(new Record(-1, "testUserName", score, 
                             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
                 DATA.showAllRecords();
+                DATA.writeToDat();
             }
 
 

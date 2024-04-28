@@ -1,6 +1,8 @@
 package edu.hitsz.scoredoc;
 
-public class Record {
+import java.io.Serializable;
+
+public class Record implements  Serializable{
     private int ranking=-1;
     private String name="testUserName";
     private int score;

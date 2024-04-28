@@ -1,3 +1,4 @@
 # AircraftWar
 ## exp4.v1
-### store in txt file
+### 采取对象序列化方式存储对象
+### 序列化整个table
