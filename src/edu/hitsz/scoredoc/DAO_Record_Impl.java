@@ -140,12 +140,8 @@ public class DAO_Record_Impl implements DAO_Record {
     }
 
     public static void main(String[] args) throws IOException, EOFException{
-        try{
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/edu/hitsz/scoredoc/score_rank.txt"));
-            Object obj = ois.readObject();
-        }catch(ClassNotFoundException e){
-            System.out.println("classnot gonut");
-        }
+        var data = new DAO_Record_Impl();
+        data.showAllRecords();
   
     }
 }
