@@ -100,41 +100,43 @@ public class DAO_Record_Impl implements DAO_Record {
     }
 
     //TODO:对象序列化来存储
+    @SuppressWarnings("unchecked")
     private void DAO_init(){
         try{
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/edu/hitsz/scoredoc/score_rank.txt"));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/edu/hitsz/scoredoc/score_rank.dat"));
             Object obj = ois.readObject();
             if(obj instanceof LinkedList){
-                table = (LinkedList<Record>) obj;                }
+                table = (LinkedList<Record>) obj;                
+            }
             else{
                 System.out.println(" read object is not of type LinkedList<Record>");
             }
-            System.out.println("read from .txt successfully");
+            // System.out.println("read from .txt successfully");
             ois.close();
         }catch(IOException e){
-            System.out.println("catch io problem");
+            // System.out.println("catch io problem");
             table = new LinkedList<Record>();
             // e.printStackTrace();
         }catch(ClassNotFoundException e){
             System.out.println("catch classnotfound problem");
             e.printStackTrace();
         }finally{
-            System.out.println("init_finally");
+            // System.out.println("init_finally");
         }
     }
 
     public void writeToDat(){
         try{
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(("src/edu/hitsz/scoredoc/score_rank.txt")));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(("src/edu/hitsz/scoredoc/score_rank.dat")));
             oos.writeObject(table);
-            System.out.println("write to .txt successfully!");
+            // System.out.println("write to .dat successfully!");
             oos.close();
         }catch(IOException e){
-            System.out.println("catch io problem");
+            // System.out.println("catch io problem");
             e.printStackTrace();
         }
         finally{
-            System.out.println("out_finally");
+            // System.out.println("out_finally");
             
         }
     }
@@ -142,6 +144,7 @@ public class DAO_Record_Impl implements DAO_Record {
     public static void main(String[] args) throws IOException, EOFException{
         var data = new DAO_Record_Impl();
         data.showAllRecords();
+        System.out.println(data);
   
     }
 }

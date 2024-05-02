@@ -11,11 +11,13 @@ class DAO_Record_Impl{
 
     + DAO_Record_Impl()
     + doDelete(String aname):void
+    + doADD(Record newRecord):void
     + findByName(String aneme):void
     + getAllRecords():LinkedList<Record>
     + toString():String
     + showAllRecords():void
-    + writetoTxt():void
+    + writeToDat():void
+    - DAO_init():void
     - sortByScores():void
 }
 
@@ -37,7 +39,7 @@ class Record{
     + toString():String
 }
 
-DAO_Record <|.. DAO_Record_Impl
-DAO_Record_Impl --> Record
+DAO_Record <|.left. DAO_Record_Impl
+DAO_Record_Impl -left-> Record
 
 @enduml
