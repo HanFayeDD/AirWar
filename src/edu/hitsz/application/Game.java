@@ -29,7 +29,8 @@ import java.util.concurrent.*;
 public class Game extends JPanel {
 
     private int backGroundTop = 0;
-
+    //模式选择
+    private int pattern = -1;
     /**
      * Scheduled 线程池，用于任务调度
      */
@@ -82,6 +83,10 @@ public class Game extends JPanel {
      * 游戏结束标志
      */
     private boolean gameOverFlag = false;
+
+    public void setPattern(int apattern){
+        this.pattern = apattern;
+    }
 
     public Game() {
         heroAircraft = HeroAircraft.getInstance();
@@ -321,8 +326,20 @@ public class Game extends JPanel {
         super.paint(g);
 
         // 绘制背景,图片滚动
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
-        g.drawImage(ImageManager.BACKGROUND_IMAGE, 0, this.backGroundTop, null);
+        BufferedImage show_bg = null;
+        if(pattern==1){
+            show_bg = ImageManager.BACKGROUND_IMAGE;
+        } else if (pattern==2) {
+            show_bg = ImageManager.BACKGROUND_IMAGE2;
+        } else if (pattern==3) {
+            show_bg = ImageManager.BACKGROUND_IMAGE3;
+        }else{
+            System.out.println("error in paint background");
+        }
+
+
+        g.drawImage(show_bg, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
+        g.drawImage(show_bg, 0, this.backGroundTop, null);
         this.backGroundTop += 1;
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
