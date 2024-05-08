@@ -25,7 +25,7 @@ public class Begin {
         easyPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Game game = new Game();
+                Game game = new Game_Easy();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);
                 game.setPattern(1);
@@ -35,7 +35,7 @@ public class Begin {
         normalPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Game game = new Game();
+                Game game = new Game_Normal();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);
                 game.setPattern(2);
@@ -45,7 +45,7 @@ public class Begin {
         toughPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Game game = new Game();
+                Game game = new Game_Tough();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);
                 game.setPattern(3);

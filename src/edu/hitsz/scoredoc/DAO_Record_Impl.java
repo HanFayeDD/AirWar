@@ -20,7 +20,10 @@ import java.io.PrintWriter;
 public class DAO_Record_Impl implements DAO_Record {
     private LinkedList<Record> table;
 
-    public DAO_Record_Impl(){
+    public String path;
+
+    public DAO_Record_Impl(String apath){
+        this.path = apath;
         DAO_init();
     }
 
@@ -36,7 +39,7 @@ public class DAO_Record_Impl implements DAO_Record {
     @Override
     public void doDelete(String aname) {
         for(Record element : table){
-            if(element.getName()==aname){
+            if(element.getName().equals(aname)){
                 table.remove();
             }
         }
@@ -46,10 +49,18 @@ public class DAO_Record_Impl implements DAO_Record {
         }
     }
 
+    public void doDeletebyIndex(int aindex){
+        table.remove(aindex);
+        sortByScores();
+        for(int i=0; i<table.size(); i++){
+            table.get(i).setRanking(i+1);
+        }
+    }
+
     @Override
     public void findByName(String aneme){
         for(Record element :table){
-            if(element.getName() == aneme){
+            if(element.getName().equals(aneme)){
                 System.out.println(element);
             }
         }
@@ -63,8 +74,8 @@ public class DAO_Record_Impl implements DAO_Record {
     @Override 
     public String toString(){
         String res = "";
-        for(int i=0; i<table.size(); i++){
-            res = res + table.get(i).toString() + '\n';
+        for (Record record : table) {
+            res = res + record.toString() + '\n';
         }
         return res;
     }
@@ -95,15 +106,15 @@ public class DAO_Record_Impl implements DAO_Record {
     //     }
     // }
 
-    private void sortByScores(){
+    public void sortByScores(){
         Collections.sort(table, new RecordComparator());
     }
 
     //TODO:对象序列化来存储
     @SuppressWarnings("unchecked")
-    private void DAO_init(){
+    public void DAO_init(){
         try{
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/edu/hitsz/scoredoc/score_rank.dat"));
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
             Object obj = ois.readObject();
             if(obj instanceof LinkedList){
                 table = (LinkedList<Record>) obj;                
@@ -127,7 +138,7 @@ public class DAO_Record_Impl implements DAO_Record {
 
     public void writeToDat(){
         try{
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(("src/edu/hitsz/scoredoc/score_rank.dat")));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream((path)));
             oos.writeObject(table);
             // System.out.println("write to .dat successfully!");
             oos.close();
@@ -142,7 +153,7 @@ public class DAO_Record_Impl implements DAO_Record {
     }
 
     public static void main(String[] args) throws IOException, EOFException{
-        var data = new DAO_Record_Impl();
+        var data = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
         data.showAllRecords();
         System.out.println(data);
   

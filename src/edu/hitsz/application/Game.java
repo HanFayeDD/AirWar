@@ -1,5 +1,6 @@
 package edu.hitsz.application;
 
+import edu.hitsz.UI.Scorerank;
 import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
@@ -30,7 +31,7 @@ public class Game extends JPanel {
 
     private int backGroundTop = 0;
     //模式选择
-    private int pattern = -1;
+    private static int pattern = -1;
     /**
      * Scheduled 线程池，用于任务调度
      */
@@ -55,7 +56,7 @@ public class Game extends JPanel {
     /**
      * 当前得分
      */
-    private int score = 0;
+    private static int score = 0;
     /**
      * 当前时刻
      */
@@ -84,13 +85,11 @@ public class Game extends JPanel {
      */
     private boolean gameOverFlag = false;
 
-    public void setPattern(int apattern){
-        this.pattern = apattern;
-    }
+    protected BufferedImage bg_pic;
 
     public Game() {
+        bg_pic = ImageManager.BACKGROUND_IMAGE;
         heroAircraft = HeroAircraft.getInstance();
-
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
@@ -107,6 +106,17 @@ public class Game extends JPanel {
         //启动英雄机鼠标监听
         new HeroController(this, heroAircraft);
 
+    }
+
+    public static int getScore(){
+        return Game.score;
+    }
+
+    public void setPattern(int i){
+        Game.pattern = i;
+    }
+    public static int getPattern(){
+        return Game.pattern;
     }
 
     /**
@@ -168,12 +178,14 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
-                //打印
-                var DATA = new DAO_Record_Impl();
-                DATA.doADD(new Record(-1, "testUserName", score, 
-                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
-                DATA.showAllRecords();
-                DATA.writeToDat();
+//                //打印
+//                DATA.doADD(new Record(-1, "testUserName", score,
+//                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+//                DATA.showAllRecords();
+//                DATA.writeToDat();
+                System.out.println(Game.pattern);
+                Main.cardPanel.add(new Scorerank().getMainPanel());
+                Main.cardLayout.last(Main.cardPanel);
             }
 
 
@@ -324,22 +336,8 @@ public class Game extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-        // 绘制背景,图片滚动
-        BufferedImage show_bg = null;
-        if(pattern==1){
-            show_bg = ImageManager.BACKGROUND_IMAGE;
-        } else if (pattern==2) {
-            show_bg = ImageManager.BACKGROUND_IMAGE2;
-        } else if (pattern==3) {
-            show_bg = ImageManager.BACKGROUND_IMAGE3;
-        }else{
-            System.out.println("error in paint background");
-        }
-
-
-        g.drawImage(show_bg, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
-        g.drawImage(show_bg, 0, this.backGroundTop, null);
+        g.drawImage(bg_pic, 0, this.backGroundTop - Main.WINDOW_HEIGHT, null);
+        g.drawImage(bg_pic, 0, this.backGroundTop, null);
         this.backGroundTop += 1;
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
