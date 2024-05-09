@@ -1,11 +1,10 @@
 package edu.hitsz.UI;
-import  edu.hitsz.application.*;
+
+import edu.hitsz.application.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 
 public class Begin {
     private JPanel mainPanel;

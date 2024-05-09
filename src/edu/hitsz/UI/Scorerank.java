@@ -27,19 +27,9 @@ public class Scorerank {
 
 
     public Scorerank() {
-        int choice = Game.getPattern();
-        DAO_Record_Impl DATA;
-        if(choice==1){
-            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
-        } else if (choice==2) {
-            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank2.dat");
-        } else if (choice==3) {
-            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank3.dat");
-        }else {
-            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
-        }
+        DAO_Record_Impl DATA = getDaoRecord();
         //添加元素:
-        String userName = JOptionPane.showInputDialog(Main.cardPanel, "游戏已结束，请输入你的姓名：", "输入", JOptionPane.INFORMATION_MESSAGE);
+        String userName = JOptionPane.showInputDialog(mainPanel, "游戏已结束，请输入你的姓名：", "输入", JOptionPane.INFORMATION_MESSAGE);
         if(userName!=null && !userName.isBlank()){//按下取消，未输入或者输入空格都不能正确添加
             DATA.doADD(new Record(-1, userName, Game.getScore(),
                             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
@@ -88,6 +78,21 @@ public class Scorerank {
                 }
             }
         });
+    }
+
+    private DAO_Record_Impl getDaoRecord() {
+        int choice = Game.getPattern();
+        DAO_Record_Impl DATA;
+        if(choice==1){
+            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
+        } else if (choice==2) {
+            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank2.dat");
+        } else if (choice==3) {
+            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank3.dat");
+        }else {
+            DATA = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
+        }
+        return DATA;
     }
 
     public JPanel getMainPanel(){

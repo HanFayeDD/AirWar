@@ -5,6 +5,7 @@ import edu.hitsz.aircraft.*;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.prop.AbstractProp;
+import edu.hitsz.musiccontrol.*;
 import edu.hitsz.prop.Prop_blood;
 import edu.hitsz.prop.Prop_bomb;
 import edu.hitsz.prop.Prop_bullet;
@@ -123,9 +124,13 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+        boolean bgm_on = true;
+
+        MusicThreadBgm bgm = new MusicThreadBgm("src/videos/bgm.wav");
+        bgm.start();
+
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
-
             time += timeInterval;
             //Boss机的产生
             if(add_score>=boss_score & boss_destroyed){
@@ -174,7 +179,9 @@ public class Game extends JPanel {
 
             // 游戏结束检查英雄机是否存活
             if (heroAircraft.getHp() <= 0) {
-                // 游戏结束
+                // 游戏jiesu
+                bgm.stopRunning();
+                new MusicThread("src/videos/game_over.wav").start();
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
@@ -183,7 +190,7 @@ public class Game extends JPanel {
 //                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
 //                DATA.showAllRecords();
 //                DATA.writeToDat();
-                System.out.println(Game.pattern);
+//                System.out.println(Game.pattern);
                 Main.cardPanel.add(new Scorerank().getMainPanel());
                 Main.cardLayout.last(Main.cardPanel);
             }
@@ -277,6 +284,7 @@ public class Game extends JPanel {
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
                     enemyAircraft.decreaseHp(bullet.getPower());
+                    new MusicThread("src/videos/bullet_hit.wav").start();
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
@@ -304,6 +312,7 @@ public class Game extends JPanel {
         // Todo: 我方获得道具，如果碰撞道具自动生效
         for(AbstractProp el : props){
             if(heroAircraft.crash(el)){
+                new MusicThread("src/videos/get_supply.wav").start();
                 el.activeProp();
             }
         }
