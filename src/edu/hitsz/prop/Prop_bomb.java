@@ -1,6 +1,7 @@
 package edu.hitsz.prop;
 
 import edu.hitsz.aircraft.*;
+import edu.hitsz.application.MusicManager;
 import edu.hitsz.musiccontrol.MusicThread;
 
 public class Prop_bomb extends AbstractProp{
@@ -8,7 +9,7 @@ public class Prop_bomb extends AbstractProp{
         super(X, Y, speedX, speedY);
     }
     public void activeProp(){
-        new MusicThread("src/videos/bomb_explosion.wav").start();
+        new MusicThread(MusicManager.BOMB_EXPLOSION).start();
         System.out.println("Bomb Supply Active!");
         this.vanish();
     }

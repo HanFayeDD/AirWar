@@ -24,7 +24,7 @@ public class HeroAircraft extends AbstractAircraft {
     /**
      * 子弹伤害
      */
-    private int power = 30;
+    private int power = 15;
 
     /**
      * 子弹射击方向 (向上发射：1，向下发射：-1)
@@ -48,7 +48,7 @@ public class HeroAircraft extends AbstractAircraft {
             HeroAircraft.instance = new HeroAircraft(                                          
                 Main.WINDOW_WIDTH / 2,
                 Main.WINDOW_HEIGHT - ImageManager.HERO_IMAGE.getHeight() ,
-                0, 0, 10000, new DefaultShoot());    
+                0, 0, 1000, new DefaultShoot());
             return HeroAircraft.instance;
         }
         else{

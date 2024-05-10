@@ -75,7 +75,7 @@ public class Game extends JPanel {
     /**
      * 产生Boss机的累积得分上界，只在boss机消灭的时候计数
      */
-    private int boss_score = 100;
+    private int boss_score = 50;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -135,8 +135,8 @@ public class Game extends JPanel {
     public void action() {
         TickingThread ttimer = new TickingThread();
 //        Thread ttimer =  new Thread(new TickingThread());
-        MusicThreadBgm bgm = new MusicThreadBgm("src/videos/bgm.wav");
-        MusicThreadBgm bgm_boss = new MusicThreadBgm("src/videos/bgm_boss.wav");
+        MusicThreadBgm bgm = new MusicThreadBgm(MusicManager.BGM);
+        MusicThreadBgm bgm_boss = new MusicThreadBgm(MusicManager.BGM_BOSS);
         if(music_on){
             bgm.start();
         }
@@ -221,7 +221,7 @@ public class Game extends JPanel {
                 bgm_boss.stopRunning();
                 bgm_boss.setExit();
                 if(music_on) {
-                    new MusicThread("src/videos/game_over.wav").start();
+                    new MusicThread(MusicManager.GAME_OVER).start();
                 }
                 executorService.shutdown();
                 gameOverFlag = true;
@@ -327,7 +327,7 @@ public class Game extends JPanel {
                     // 敌机损失一定生命值
                     enemyAircraft.decreaseHp(bullet.getPower());
                     if(music_on) {
-                        new MusicThread("src/videos/bullet_hit.wav").start();
+                        new MusicThread(MusicManager.BULLET_HIT).start();
                     }
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
@@ -357,7 +357,7 @@ public class Game extends JPanel {
         for(AbstractProp el : props){
             if(heroAircraft.crash(el)){
                 if(music_on) {
-                    new MusicThread("src/videos/get_supply.wav").start();
+                    new MusicThread(MusicManager.GET_SUPPLY).start();
                 }
                 el.activeProp();
             }
@@ -397,21 +397,83 @@ public class Game extends JPanel {
         if (this.backGroundTop == Main.WINDOW_HEIGHT) {
             this.backGroundTop = 0;
         }
-
         // 先绘制子弹，后绘制飞机
         // 这样子弹显示在飞机的下层
         paintImageWithPositionRevised(g, enemyBullets);
         paintImageWithPositionRevised(g, heroBullets);
-        
+        //TODO:plot healtbar
         paintImageWithPositionRevised(g, enemyAircrafts);
         paintImageWithPositionRevised(g, props);
+        paintHeroBar(g);
+        paintEnemyBar(g, enemyAircrafts);
 
         g.drawImage(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2,
                 heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2, null);
 
         //绘制得分和生命值
         paintScoreAndLife(g);
+        paintHeroBar(g);
 
+    }
+
+    private void paintEnemyBar(Graphics g, List<? extends AbstractBadAircraft> objects){
+        if(objects.size()==0){
+            return;
+        }
+        for(AbstractBadAircraft object : objects){
+            float x;
+            float y;
+            float width;
+            int new_x;
+            int new_y;
+            int new_width;
+            if(object instanceof MobEnemy){
+                x = (float) ImageManager.MOB_ENEMY_IMAGE.getWidth() /2;
+                y = (float) ImageManager.MOB_ENEMY_IMAGE.getHeight()/2;
+                width = (float) (1.6*x);
+                new_x = (int)(object.getLocationX()-0.8*x);
+                new_y = (int)(object.getLocationY()-1.5*y);//change here
+                new_width = (int)(width*object.getHp()/object.getMaxHp());
+            }
+            else if(object instanceof EliteEnemy){
+                x = (float) ImageManager.ELI_ENEMY_IMAGE.getWidth() /2;
+                y = (float) ImageManager.ELI_ENEMY_IMAGE.getHeight() /2;
+                width = (float) (1.6*x);
+                new_x = (int)(object.getLocationX()-0.8*x);
+                new_y = (int)(object.getLocationY()-1.5*y);//change here
+                new_width = (int)(width*object.getHp()/object.getMaxHp());
+            }
+            else if(object instanceof ElitePlusEnemy){
+                x = (float) ImageManager.ELI_PLUS_ENEMY_IMAGE.getWidth()/2;
+                y = (float) ImageManager.ELI_PLUS_ENEMY_IMAGE.getHeight()/2;
+                width = (float) (1.6*x);
+                new_x = (int)(object.getLocationX()-0.8*x);
+                new_y = (int)(object.getLocationY()-1.5*y);//change here
+                new_width = (int)(width*object.getHp()/object.getMaxHp());;
+            }else{
+                x = (float) ImageManager.BOSS_IMAGE.getWidth()/2;
+                y = (float) ImageManager.BOSS_IMAGE.getHeight()/2;
+                width = (float) (1.6*x);
+                new_x = (int)(object.getLocationX()-0.8*x);
+                new_y = (int)(object.getLocationY()-1.1*y);//change here
+                new_width = (int)(width*object.getHp()/object.getMaxHp());;
+            }
+            g.setColor(Color.red);
+            g.fillRect(new_x, new_y, new_width, 10);
+            g.setColor(Color.BLACK);
+            g.drawRect(new_x, new_y, (int)(width), 10);
+        }
+
+    }
+
+    private void paintHeroBar(Graphics g){
+        int x = (int)(HeroAircraft.getInstance().getLocationX()-0.8*(ImageManager.HERO_IMAGE.getWidth()/2));
+        int y = (int)(HeroAircraft.getInstance().getLocationY()+1.1*(ImageManager.HERO_IMAGE.getHeight()/2));
+        int width = (int)(1.6*(ImageManager.HERO_IMAGE.getWidth()/2)*HeroAircraft.getInstance().getHp()/HeroAircraft.getInstance().getMaxHp());
+        g.setColor(Color.GREEN);
+        g.fillRect(x, y, width, 10);
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, (int)(1.6*(ImageManager.HERO_IMAGE.getWidth()/2)), 10);
     }
 
     private void paintImageWithPositionRevised(Graphics g, List<? extends AbstractFlyingObject> objects) {
