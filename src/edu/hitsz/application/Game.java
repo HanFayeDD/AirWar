@@ -10,6 +10,8 @@ import edu.hitsz.prop.Prop_blood;
 import edu.hitsz.prop.Prop_bomb;
 import edu.hitsz.prop.Prop_bullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.shootstrategy.DefaultShoot;
+import edu.hitsz.timecontrol.TickingThread;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import edu.hitsz.factory.*; 
 import edu.hitsz.scoredoc.*;
@@ -131,12 +133,14 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
+        TickingThread ttimer = new TickingThread();
+//        Thread ttimer =  new Thread(new TickingThread());
         MusicThreadBgm bgm = new MusicThreadBgm("src/videos/bgm.wav");
         MusicThreadBgm bgm_boss = new MusicThreadBgm("src/videos/bgm_boss.wav");
         if(music_on){
             bgm.start();
         }
-
+        ttimer.start();
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
             time += timeInterval;
@@ -196,12 +200,16 @@ public class Game extends JPanel {
             //工具移动
             propsMoveAction();
 
-            //
-//            checkshootingProp();
             // 撞击检测
             crashCheckAction();
             // 后处理
             postProcessAction();
+            //控制英雄机的射击策略
+            if(!(heroAircraft.getShoot_way() instanceof DefaultShoot)){
+
+            }
+
+
 
             //每个时刻重绘界面
             repaint();
@@ -209,13 +217,16 @@ public class Game extends JPanel {
             if (heroAircraft.getHp() <= 0) {
                 // 游戏jiesu
                 bgm.stopRunning();
+                bgm.setExit();
                 bgm_boss.stopRunning();
+                bgm_boss.setExit();
                 if(music_on) {
                     new MusicThread("src/videos/game_over.wav").start();
                 }
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
+                ttimer.stopThread();
 //                //打印
 //                DATA.doADD(new Record(-1, "testUserName", score,
 //                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
@@ -236,6 +247,7 @@ public class Game extends JPanel {
         executorService.scheduleWithFixedDelay(task, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
         
     }
+
 
     //***********************
     //      Action 各部分

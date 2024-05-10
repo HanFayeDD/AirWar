@@ -24,7 +24,7 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
         super(locationX, locationY, speedX, speedY);
         this.hp = hp;
         this.maxHp = hp;
-        this.shoot_way = ashoot_way;
+        shoot_way = ashoot_way;
     }
 
     public void decreaseHp(int decrease){
@@ -38,8 +38,7 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
     public int getHp() {
         return hp;
     }
-    public void setStrategy(Strategy ashoot_way){
-        this.shoot_way = ashoot_way;
+    public synchronized void setStrategy(Strategy ashoot_way){shoot_way = ashoot_way;
     }
     /**
      * 飞机射击方法，可射击对象必须实现
@@ -48,6 +47,11 @@ public abstract class AbstractAircraft extends AbstractFlyingObject {
      *  非可射击对象空实现，返回null
      */
     public abstract List<BaseBullet> shoot();
+
+    public synchronized Strategy getShoot_way(){
+        return shoot_way;
+    }
+
 }
 
 

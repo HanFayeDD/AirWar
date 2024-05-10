@@ -5,14 +5,17 @@ import java.io.InputStream;
 
 public class MusicThreadBgm extends MusicThread{
 
+    private boolean exit;
+
     public MusicThreadBgm(String filename) {
         super(filename);
         keeprunning = true;
+        exit = false;
     }
 
     @Override
     public void run() {
-        while (true){
+        while (!exit){
             if(keeprunning) {
                 InputStream stream = new ByteArrayInputStream(super.getSamples());
                 play(stream);
@@ -25,5 +28,9 @@ public class MusicThreadBgm extends MusicThread{
 
     public void restartRunning(){
         keeprunning = true;
+    }
+
+    public void setExit(){
+        this.exit = true;
     }
 }
