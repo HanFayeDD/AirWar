@@ -18,7 +18,19 @@ public class Begin {
         musicSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("hh");
+                String select = (String) musicSelect.getSelectedItem();
+                if (select != null) {
+                    if(select.equals("开")){
+                        System.out.println("音效开");
+                        Game.setMusic_on(true);
+                    } else if (select.equals("关")) {
+                        System.out.println("音效关");
+                        Game.setMusic_on(false);
+                    }
+                }
+                else {
+                    System.out.println("having null selection");
+                }
             }
         });
         easyPattern.addActionListener(new ActionListener() {
@@ -59,6 +71,14 @@ public class Begin {
 
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("mainPanel");
+        frame.setContentPane(new Begin().mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }

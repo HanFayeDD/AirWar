@@ -27,6 +27,7 @@ public class MusicThread extends Thread {
     public MusicThread(String filename) {
         //初始化filename
         this.filename = filename;
+        keeprunning = true;
         reverseMusic();
     }
 
@@ -108,6 +109,10 @@ public class MusicThread extends Thread {
     public void run() {
         InputStream stream = new ByteArrayInputStream(samples);
         play(stream);
+    }
+
+    public boolean isRunning(){
+        return  true;
     }
 }
 

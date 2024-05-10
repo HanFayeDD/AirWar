@@ -12,12 +12,18 @@ public class MusicThreadBgm extends MusicThread{
 
     @Override
     public void run() {
-        while (keeprunning){
-            InputStream stream = new ByteArrayInputStream(super.getSamples());
-            play(stream);
+        while (true){
+            if(keeprunning) {
+                InputStream stream = new ByteArrayInputStream(super.getSamples());
+                play(stream);
+            }
         }
     }
     public void stopRunning(){
         keeprunning = false;
+    }
+
+    public void restartRunning(){
+        keeprunning = true;
     }
 }

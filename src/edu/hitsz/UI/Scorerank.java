@@ -56,6 +56,17 @@ public class Scorerank {
         };
 
         scoreTable.setModel(model);
+
+        // 创建一个居中的单元格渲染器
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+
+        // 设置所有列的渲染器
+        for (i = 0; i < scoreTable.getColumnCount(); i++) {
+            scoreTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+
+
         tableScrollPanel.setViewportView(scoreTable);
 
         delete.addActionListener(new ActionListener() {
