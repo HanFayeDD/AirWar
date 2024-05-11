@@ -22,12 +22,12 @@ public class MusicThread extends Thread {
     private String filename;
     private AudioFormat audioFormat;
     private byte[] samples;
-    protected boolean keeprunning;
+    protected boolean keeprunning = true;
+    protected boolean exit = true;
 
     public MusicThread(String filename) {
         //初始化filename
         this.filename = filename;
-        keeprunning = true;
         reverseMusic();
     }
 
@@ -107,13 +107,32 @@ public class MusicThread extends Thread {
 
     @Override
     public void run() {
-        InputStream stream = new ByteArrayInputStream(samples);
-        play(stream);
+        do {
+            if(keeprunning){
+                InputStream stream = new ByteArrayInputStream(getSamples());
+                play(stream);
+            }
+        }while (!exit);
     }
 
-    public boolean isRunning(){
-        return  true;
+    public void stopRunning(){
+        keeprunning = false;
     }
+
+    public void restartRunning(){
+        keeprunning = true;
+    }
+
+    public void notEXIT(){
+        exit = false;
+    }
+
+    public void setEXIT(){
+        keeprunning = false;
+        exit = true;
+    }
+
 }
+
 
 

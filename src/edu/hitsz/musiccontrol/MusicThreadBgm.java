@@ -22,13 +22,6 @@ public class MusicThreadBgm extends MusicThread{
             }
         }
     }
-    public void stopRunning(){
-        keeprunning = false;
-    }
-
-    public void restartRunning(){
-        keeprunning = true;
-    }
 
     public void setExit(){
         this.exit = true;

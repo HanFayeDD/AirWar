@@ -15,7 +15,6 @@ public class Main {
 
     public static final CardLayout cardLayout = new CardLayout(0,0);
     public static final JPanel cardPanel = new JPanel(cardLayout);
-
     public static void main(String[] args) {
 
         System.out.println("Hello Aircraft War");
@@ -34,10 +33,6 @@ public class Main {
 
         Begin begin_page = new Begin();
         cardPanel.add(begin_page.getMainPanel());
-
-//        Game game = new Game();
-//        frame.add(game);
         frame.setVisible(true);
-//        game.action();
     }
 }

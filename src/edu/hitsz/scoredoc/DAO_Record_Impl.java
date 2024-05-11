@@ -152,7 +152,7 @@ public class DAO_Record_Impl implements DAO_Record {
         }
     }
 
-    public static void main(String[] args) throws IOException, EOFException{
+    public static void main(String[] args) throws IOException{
         var data = new DAO_Record_Impl("src/edu/hitsz/scoredoc/score_rank1.dat");
         data.showAllRecords();
         System.out.println(data);

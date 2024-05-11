@@ -35,6 +35,8 @@ public class Game extends JPanel {
     private int backGroundTop = 0;
     //模式选择
     private static int pattern = -1;
+
+    private static String playername = "";
     /**
      * Scheduled 线程池，用于任务调度
      */
@@ -134,9 +136,10 @@ public class Game extends JPanel {
      */
     public void action() {
         TickingThread ttimer = new TickingThread();
-//        Thread ttimer =  new Thread(new TickingThread());
-        MusicThreadBgm bgm = new MusicThreadBgm(MusicManager.BGM);
-        MusicThreadBgm bgm_boss = new MusicThreadBgm(MusicManager.BGM_BOSS);
+        MusicThread bgm = new MusicThread(MusicManager.BGM);
+        bgm.notEXIT();
+        MusicThread bgm_boss = new MusicThread(MusicManager.BGM_BOSS);
+        bgm_boss.notEXIT();
         if(music_on){
             bgm.start();
         }
@@ -216,10 +219,8 @@ public class Game extends JPanel {
             // 游戏结束检查英雄机是否存活
             if (heroAircraft.getHp() <= 0) {
                 // 游戏jiesu
-                bgm.stopRunning();
-                bgm.setExit();
-                bgm_boss.stopRunning();
-                bgm_boss.setExit();
+                bgm.setEXIT();
+                bgm_boss.setEXIT();
                 if(music_on) {
                     new MusicThread(MusicManager.GAME_OVER).start();
                 }
@@ -227,14 +228,10 @@ public class Game extends JPanel {
                 gameOverFlag = true;
                 System.out.println("Game Over!");
                 ttimer.stopThread();
-//                //打印
-//                DATA.doADD(new Record(-1, "testUserName", score,
-//                            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
-//                DATA.showAllRecords();
-//                DATA.writeToDat();
-//                System.out.println(Game.pattern);
-                Main.cardPanel.add(new Scorerank().getMainPanel());
+                Scorerank page = new Scorerank();
+                Main.cardPanel.add(page.getMainPanel());
                 Main.cardLayout.last(Main.cardPanel);
+                page.addplayerPage();
             }
 
 
@@ -293,7 +290,9 @@ public class Game extends JPanel {
         }
     }
 
-
+    public static String getPlayername(){
+        return playername;
+    }
     /**
      * 碰撞检测：
      * 1. 敌机攻击英雄
