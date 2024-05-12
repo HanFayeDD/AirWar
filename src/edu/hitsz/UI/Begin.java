@@ -67,6 +67,7 @@ public class Begin {
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+        mainPanel = new BackgroundPanel();
     }
 
     public JPanel getMainPanel() {
@@ -80,5 +81,7 @@ public class Begin {
         frame.pack();
         frame.setVisible(true);
     }
+
+
 
 }

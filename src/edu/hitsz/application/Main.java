@@ -28,9 +28,7 @@ public class Main {
         frame.setBounds(((int) screenSize.getWidth() - WINDOW_WIDTH) / 2, 0,
                 WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         frame.add(cardPanel);
-
         Begin begin_page = new Begin();
         cardPanel.add(begin_page.getMainPanel());
         frame.setVisible(true);
