@@ -11,7 +11,6 @@ import edu.hitsz.prop.Prop_bomb;
 import edu.hitsz.prop.Prop_bullet;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.shootstrategy.DefaultShoot;
-import edu.hitsz.timecontrol.TickingThread;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import edu.hitsz.factory.*; 
 import edu.hitsz.scoredoc.*;
@@ -69,7 +68,7 @@ public class Game extends JPanel {
     /**
      * Boss是否被消灭，一个时间内只能有一个boss机
      */
-    private boolean boss_destroyed = true;
+    private static  boolean boss_destroyed = true;
     /**
      * Boss被消灭后累积的得分
      */
@@ -88,7 +87,7 @@ public class Game extends JPanel {
     /**
      * 游戏结束标志
      */
-    private boolean gameOverFlag = false;
+    private static  boolean gameOverFlag = false;
 
     protected BufferedImage bg_pic;
 
@@ -119,6 +118,9 @@ public class Game extends JPanel {
         Game.music_on = choice;
     }
 
+    public static boolean getgameOverFlag(){
+        return gameOverFlag;
+    }
 
     public static int getScore(){
         return Game.score;
@@ -135,7 +137,6 @@ public class Game extends JPanel {
      * 游戏启动入口，执行游戏逻辑
      */
     public void action() {
-        TickingThread ttimer = new TickingThread();
         MusicThread bgm = new MusicThread(MusicManager.BGM);
         bgm.notEXIT();
         MusicThread bgm_boss = new MusicThread(MusicManager.BGM_BOSS);
@@ -143,7 +144,6 @@ public class Game extends JPanel {
         if(music_on){
             bgm.start();
         }
-        ttimer.start();
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
             time += timeInterval;
@@ -227,7 +227,6 @@ public class Game extends JPanel {
                 executorService.shutdown();
                 gameOverFlag = true;
                 System.out.println("Game Over!");
-                ttimer.stopThread();
                 Scorerank page = new Scorerank();
                 Main.cardPanel.add(page.getMainPanel());
                 Main.cardLayout.last(Main.cardPanel);

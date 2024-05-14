@@ -4,6 +4,8 @@ import edu.hitsz.application.Main;
 import edu.hitsz.basic.AbstractFlyingObject;
 
 public abstract class AbstractProp extends AbstractFlyingObject {
+    protected static Thread currentthread = null;
+
     public AbstractProp(int locationX, int locationY, int speedX, int speedY){
         super(locationX, locationY, speedX, speedY);
     }
