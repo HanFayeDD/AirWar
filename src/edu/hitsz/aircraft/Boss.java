@@ -25,6 +25,10 @@ public class Boss extends AbstractBadAircraft{
         super.forward();
     }
 
+    @Override
+    public void update(){
+    }
+
     public List<BaseBullet> shoot(){
        return shoot_way.executeshoot(this, direction, shootNum, power);
     }

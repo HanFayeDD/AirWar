@@ -28,7 +28,12 @@ public class MobEnemy extends AbstractBadAircraft {
             vanish();
         }
     }
-    
+
+    @Override
+    public void update(){
+        this.decreaseHp(this.getHp());
+    }
+
     @Override
     public List<BaseBullet> shoot() {
         return new LinkedList<>();//返回空的列表

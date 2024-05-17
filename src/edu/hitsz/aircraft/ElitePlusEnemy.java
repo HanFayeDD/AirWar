@@ -27,6 +27,11 @@ public class ElitePlusEnemy extends AbstractBadAircraft{
         }
     }
 
+    @Override
+    public void update(){
+        this.decreaseHp(20);
+    }
+
     public List<AbstractProp> dropProp(){
         int which_prop = (int)(Math.random()*100+1)%8;
         List<AbstractProp> res = new LinkedList<>();

@@ -1,6 +1,7 @@
 package edu.hitsz.aircraft;
 
 import edu.hitsz.bullet.BaseBullet;
+import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.prop.AbstractProp;
 import edu.hitsz.basic.AbstractFlyingObject;
 import edu.hitsz.shootstrategy.*;

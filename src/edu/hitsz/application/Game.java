@@ -6,17 +6,12 @@ import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
 import edu.hitsz.prop.AbstractProp;
 import edu.hitsz.musiccontrol.*;
-import edu.hitsz.prop.Prop_blood;
-import edu.hitsz.prop.Prop_bomb;
-import edu.hitsz.prop.Prop_bullet;
 import edu.hitsz.basic.AbstractFlyingObject;
+import edu.hitsz.prop.Prop_bomb;
 import edu.hitsz.shootstrategy.DefaultShoot;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-import edu.hitsz.factory.*; 
-import edu.hitsz.scoredoc.*;
-import edu.hitsz.scoredoc.Record;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import edu.hitsz.factory.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -356,6 +351,10 @@ public class Game extends JPanel {
             if(heroAircraft.crash(el)){
                 if(music_on) {
                     new MusicThread(MusicManager.GET_SUPPLY).start();
+                }
+                if(el instanceof Prop_bomb){
+                    ((Prop_bomb) el).addAll(enemyAircrafts);
+                    ((Prop_bomb) el).addAll(enemyBullets);
                 }
                 el.activeProp();
             }

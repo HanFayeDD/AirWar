@@ -35,6 +35,11 @@ public class EliteEnemy extends AbstractBadAircraft{
         }
     }
 
+    @Override
+    public void update(){
+        this.decreaseHp(this.getHp());
+    }
+
     public List<BaseBullet> shoot() {
         return shoot_way.executeshoot(this, direction, shootNum, power);
     }

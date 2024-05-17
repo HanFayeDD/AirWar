@@ -23,6 +23,7 @@ public class Prop_bulletplus extends AbstractProp{
                     System.out.println(HeroAircraft.getInstance().getShoot_way()+"第 "+ (i+1) + " s");
                 } catch (InterruptedException e) {
                     System.out.println("原有道具被中断");
+                    break;
                 }
             }
             System.out.println("change to DefaultShootWay");
