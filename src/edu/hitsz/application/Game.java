@@ -24,7 +24,7 @@ import java.util.concurrent.*;
  *
  * @author hitsz
  */
-public class Game extends JPanel {
+public abstract class Game extends JPanel {
 
     private int backGroundTop = 0;
     //模式选择
@@ -35,27 +35,37 @@ public class Game extends JPanel {
      * Scheduled 线程池，用于任务调度
      */
     private final ScheduledExecutorService executorService;
-
     /**
      * 时间间隔(ms)，控制刷新频率
      */
+    protected double enemy_1_2 = 0.6;//0.5的概率是普通敌机
+    protected double enemy_2_3 = 0.9;//0.3的概率是Elite,0.2是plus
+
+
     private int timeInterval = 40;
 
-    private final HeroAircraft heroAircraft;
-    private final List<AbstractBadAircraft> enemyAircrafts;
-    private final List<BaseBullet> heroBullets;
-    private final List<BaseBullet> enemyBullets;
-    private final List<AbstractProp> props;
+    protected boolean having_boss = true;
+
+    protected final HeroAircraft heroAircraft;
+    protected final List<AbstractBadAircraft> enemyAircrafts;
+    protected final List<BaseBullet> heroBullets;
+    protected final List<BaseBullet> enemyBullets;
+    protected final List<AbstractProp> props;
+
+    /**
+     * k控制产生机型数量的变量
+     */
+
 
     /**
      * 屏幕中出现的敌机最大数量
      */
-    private int enemyMaxNumber = 5;
+    protected int enemyMaxNumber = 5;
 
     /**
      * 当前得分
      */
-    private static int score = 0;
+    protected static int score = 0;
     /**
      * 当前时刻
      */
@@ -71,7 +81,7 @@ public class Game extends JPanel {
     /**
      * 产生Boss机的累积得分上界，只在boss机消灭的时候计数
      */
-    private int boss_score = 50;
+    protected int boss_score = 50;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -124,6 +134,7 @@ public class Game extends JPanel {
     public void setPattern(int i){
         Game.pattern = i;
     }
+
     public static int getPattern(){
         return Game.pattern;
     }
@@ -143,9 +154,9 @@ public class Game extends JPanel {
         Runnable task = () -> {
             time += timeInterval;
             //Boss机的产生
-            if(add_score>=boss_score && boss_destroyed){
-                BadAircraftFactory badfactory = new BossFactory();
-                enemyAircrafts.add(badfactory.createBad());
+            if(having_boss && add_score>=boss_score && boss_destroyed){
+                //generate_boss
+                this.generate_BOSS();
                 add_score = 0;
                 boss_destroyed = false;
                 if(music_on) {
@@ -171,19 +182,7 @@ public class Game extends JPanel {
             if (timeCountAndNewCycleJudge()) {
                 System.out.println(time);
                 // 新敌机产生
-                int which_enemy = (int)(Math.random()*10+1)%5;             
-                if (enemyAircrafts.size() < enemyMaxNumber && which_enemy<3) {
-                    BadAircraftFactory badfactory = new MobFactory();
-                    enemyAircrafts.add(badfactory.createBad());
-                }
-                if(enemyAircrafts.size() < enemyMaxNumber && which_enemy==3){
-                    BadAircraftFactory badfactory = new EliteFactory();
-                    enemyAircrafts.add(badfactory.createBad());
-                }
-                if(enemyAircrafts.size() < enemyMaxNumber && which_enemy==4){
-                    BadAircraftFactory badfactory = new ElietePlusFactory();
-                    enemyAircrafts.add(badfactory.createBad());
-                }
+                this.generate_Other_Bad();
                 //飞机射出子弹
                 shootAction();
             }
@@ -203,11 +202,6 @@ public class Game extends JPanel {
             // 后处理
             postProcessAction();
             //控制英雄机的射击策略
-            if(!(heroAircraft.getShoot_way() instanceof DefaultShoot)){
-
-            }
-
-
 
             //每个时刻重绘界面
             repaint();
@@ -238,11 +232,20 @@ public class Game extends JPanel {
         executorService.scheduleWithFixedDelay(task, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
         
     }
-
+    //TODO:模板模式
+    /*
+    模板模式
+     */
+    public abstract void generate_BOSS();
+    public abstract void generate_Other_Bad();
 
     //***********************
     //      Action 各部分
     //***********************
+
+    public static void addscore(int addnum){
+        score = score + addnum;
+    }
 
     private boolean timeCountAndNewCycleJudge() {
         cycleTime += timeInterval;
@@ -326,12 +329,12 @@ public class Game extends JPanel {
                     if (enemyAircraft.notValid()) {
                         // TODO 获得分数，产生道具补给
                         score += 10;
-                        if(boss_destroyed){
+                        if(having_boss && boss_destroyed){
                             add_score += 10;
                         }
                         if(enemyAircraft instanceof EliteEnemy || enemyAircraft instanceof ElitePlusEnemy || enemyAircraft instanceof Boss){
                             props.addAll(enemyAircraft.dropProp());
-                            if(enemyAircraft instanceof Boss){
+                            if(enemyAircraft instanceof Boss && having_boss){
                                 boss_destroyed = true;
                                 add_score = 0;
                                 System.out.println("BOSS被消灭");

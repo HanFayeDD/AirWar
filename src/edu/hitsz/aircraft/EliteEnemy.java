@@ -3,6 +3,7 @@ package edu.hitsz.aircraft;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.hitsz.application.Game;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.bullet.EnemyBullet;
@@ -37,6 +38,7 @@ public class EliteEnemy extends AbstractBadAircraft{
 
     @Override
     public void update(){
+        Game.addscore(10);
         this.decreaseHp(this.getHp());
     }
 
@@ -45,7 +47,7 @@ public class EliteEnemy extends AbstractBadAircraft{
     }
 
     public List<AbstractProp> dropProp(){
-        int which_prop = (int)(Math.random()*100+1)%8;
+        int which_prop = (int)(Math.random()*100+1)%10;
         List<AbstractProp> res = new LinkedList<>();
         if(which_prop==0){
             PropFactory pf = new BloodFactory();

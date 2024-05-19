@@ -1,5 +1,6 @@
 package edu.hitsz.aircraft;
 
+import edu.hitsz.application.Game;
 import edu.hitsz.application.Main;
 import edu.hitsz.bullet.BaseBullet;
 import edu.hitsz.prop.AbstractProp;
@@ -31,6 +32,7 @@ public class MobEnemy extends AbstractBadAircraft {
 
     @Override
     public void update(){
+        Game.addscore(10);
         this.decreaseHp(this.getHp());
     }
 

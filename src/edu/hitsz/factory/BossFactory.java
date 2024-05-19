@@ -7,6 +7,11 @@ import edu.hitsz.shootstrategy.CircleShoot;;
 
 
 public class BossFactory implements BadAircraftFactory{
+    public int boss_hp;
+    public BossFactory(int ahp){
+        boss_hp = ahp;
+    }
+
     public AbstractBadAircraft createBad(){
         double rand = Math.random();
         int dir = (rand>=0.5) ? 1 : -1;
@@ -15,7 +20,7 @@ public class BossFactory implements BadAircraftFactory{
             (int) (Math.random() * Main.WINDOW_HEIGHT * 0.05),
             dir,
             3,
-            300,
+            boss_hp,
             new CircleShoot()
             );
     }
