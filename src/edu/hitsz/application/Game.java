@@ -383,6 +383,9 @@ public abstract class Game extends JPanel {
                     new MusicThread(MusicManager.GET_SUPPLY).start();
                 }
                 if(el instanceof Prop_bomb){
+                    if(music_on){
+                        new MusicThread(MusicManager.BOMB_EXPLOSION).start();
+                    }
                     ((Prop_bomb) el).addAll(enemyAircrafts);
                     ((Prop_bomb) el).addAll(enemyBullets);
                 }

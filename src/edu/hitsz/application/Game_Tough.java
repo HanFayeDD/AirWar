@@ -51,7 +51,7 @@ public class Game_Tough extends Game{
         //更新产生频率：
 //        timeInterval = timeInterval*time_circle_rate
         //依据概率产生相应敌机
-        if(enemy_1_2>=0.10){
+        if(enemy_1_2>=0.15){
             enemy_1_2 = enemy_1_2*(P_rate-0.02);
             enemy_2_3 = enemy_2_3*P_rate;
         }

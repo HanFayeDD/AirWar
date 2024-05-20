@@ -1,6 +1,7 @@
 package edu.hitsz.prop;
 
 import edu.hitsz.application.Badthing;
+import edu.hitsz.application.Game;
 import edu.hitsz.application.MusicManager;
 import edu.hitsz.musiccontrol.MusicThread;
 
@@ -16,7 +17,6 @@ public class Prop_bomb extends AbstractProp{
     }
 
     public void activeProp(){
-        new MusicThread(MusicManager.BOMB_EXPLOSION).start();
         System.out.println("Bomb Supply Active!");
         notifyAllBad();
         this.vanish();
