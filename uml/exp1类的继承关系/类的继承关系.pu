@@ -1,0 +1,170 @@
+@startuml
+skinparam dpi 400
+abstract class AbstractFlyingObject
+{
+    # locationX:int
+    # locationY:int
+    # speedX:int
+    # speedY:int
+    # image:BufferedImage
+    # width:int
+    # height:int
+    # isValid:boolean
+
+    + AbstractFlyingObject(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + crash(AbstractFlyingObject flyingObject):boolean
+    + setLocation(double locationX, double locationY):void
+    + getLocationX():int
+    + getLocationY():int
+    + getSpeedY():int
+    + getImage():BufferedImage
+    + getWidth():int
+    + getHeight():int
+    + notValid():boolean
+    + vanish():void
+}
+
+abstract class BaseBullet
+{
+    - power:int
+    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
+    + @Overide forward():void
+	+ getPower():int
+}
+
+abstract class AbstractAircraft
+{
+	# maxHp:int
+    # hp:int
+    # shoot_way:Strategy
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + decreaseHp(int decrease):void
+    + getHp():int
+    + setStrategy(Strategy ashooywasy):void
+    + {abstract} shoot():List<BaseBullet>
+    + getShoot_way():Strategy
+    + getMaxHp():int
+}
+
+abstract AbstractBadAircraft{
+    + AbstractBadAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + {abstract} dropProp(): List<AbstractProp>
+}
+
+class HeroBullet {
+    + HeroBullet(int locationX, int locationY,int speedX, int speedY, int power)
+    + update():void 
+}
+
+class EnemyBullet {
+    + EnemyBullet(int locationX, int locationY,int speedX, int speedY, int power)
+    + update():void 
+}
+
+class HeroAircraft {
+    - shootNum:int
+    - power:int
+    - direction:int
+    - {static} instance:HeroAircraft
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + {static} getInstance():HeroAircraft
+    + forward():void
+    + shoot():List<BaseBullet>
+    + InceasingHp(int num):void
+}
+
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp> 
+    + update():void
+}
+
+class EliteEnemy{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+class ElitePlusEnemy{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+class Boss{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + Boss(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+abstract class AbstractProp
+{   
+    # {static} currentthread:Thread
+    + AbstractProp(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + {abstract} activeProp():void
+}
+
+class Prop_bullet{
+    + Prop_bullet(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void
+}
+
+
+class Prop_bomb{
+    - badthings:List<Badthing>
+    + Prop_blood(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void
+    + addBadthing(Badthing the bad):void
+    + deleteBadthing(Badthing thebad):void
+    + addAll(List<? extends Badthing> badthing_list):void
+    + notifyAllBad():void
+}
+
+class Prop_bulletplus{
+    + Prop_bullet(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void   
+}
+
+class Prop_blood{
+    + Prop_blood(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void   
+}
+
+AbstractFlyingObject <|-- AbstractAircraft
+AbstractFlyingObject <|-left- BaseBullet
+AbstractFlyingObject <|-right- AbstractProp
+
+AbstractProp <|-- Prop_blood
+AbstractProp <|-- Prop_bomb
+AbstractProp <|-- Prop_bullet
+AbstractProp <|-- Prop_bulletplus
+
+AbstractAircraft <|-- AbstractBadAircraft
+AbstractAircraft <|-- HeroAircraft
+AbstractBadAircraft <|-- EliteEnemy
+AbstractBadAircraft <|-- MobEnemy
+AbstractBadAircraft <|-- ElitePlusEnemy
+AbstractBadAircraft <|-- Boss
+
+BaseBullet <|-- HeroBullet
+BaseBullet <|-- EnemyBullet
+@enduml

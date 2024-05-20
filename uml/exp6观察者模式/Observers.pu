@@ -80,7 +80,7 @@ BaseBullet <|-- EnemyBullet
 BaseBullet <|-- HeroBullet
 
 Badthing <|.right.  AbstractBadAircraft
-AbstractBadAircraft <|-up- MobEnemy
+AbstractBadAircraft <|-right- MobEnemy
 AbstractBadAircraft <|-up- EliteEnemy
 AbstractBadAircraft <|-- ElitePlusEnemy
 AbstractBadAircraft <|-- Boss

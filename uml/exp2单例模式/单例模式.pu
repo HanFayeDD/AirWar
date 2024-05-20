@@ -1,0 +1,14 @@
+@startuml 单例模式
+class HeroAircraft {
+    - shootNum:int
+    - power:int
+    - direction:int
+    - {static} instance:HeroAircraft
+    - HeroAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + {static} getInstance():HeroAircraft
+    + forward():void
+    + shoot():List<BaseBullet>
+    + InceasingHp(int num):void
+}
+
+@enduml

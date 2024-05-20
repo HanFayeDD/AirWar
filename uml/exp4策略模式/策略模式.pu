@@ -1,0 +1,38 @@
+@startuml newuml
+interface Strategy{
+    + executeshoot(AbstractAircraft fly, int direction, int shootNum, int power):List<BaseBullet>
+}
+
+class DefaultShoot{
+    + executeshoot(AbstractAircraft fly, int direction, int shootNum, int power):List<BaseBullet>
+}
+
+class ScatterShoot{
+    + executeshoot(AbstractAircraft fly, int direction, int shootNum, int power):List<BaseBullet>
+}
+
+class CircleShoot{
+    + executeshoot(AbstractAircraft fly, int direction, int shootNum, int power):List<BaseBullet>
+}
+
+Strategy <|.. DefaultShoot
+Strategy <|.. ScatterShoot
+Strategy <|.. CircleShoot
+
+abstract class AbstractAircraft
+{
+	# maxHp:int
+    # hp:int
+    # shoot_way:Strategy
+    + AbstractAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + decreaseHp(int decrease):void
+    + getHp():int
+    + setStrategy(Strategy ashooywasy):void
+    + {abstract} shoot():List<BaseBullet>
+    + getShoot_way():Strategy
+    + getMaxHp():int
+}
+
+AbstractAircraft o--> Strategy
+
+@enduml

@@ -1,0 +1,104 @@
+@startuml
+interface BadAircraftFactory{
+    + {abstract}  createBad():AbstractBadAircaft
+}
+
+class EliteFactory{
+    - {static} rate_bad:double
+    - {static} step:double
+    + createBad():AbstractBadAircraft  
+    + {static} setStep(double num):void
+    + {static} UpRate_bad():void
+    + {static} getRate_bad():double
+}
+
+class MobFactory{
+    - {static} rate_bad:double
+    - {static} step:double
+    + createBad():AbstractBadAircraft  
+    + {static} setStep(double num):void
+    + {static} UpRate_bad():void
+    + {static} getRate_bad():double
+}
+
+class ElitePlusFactory{
+    - {static} rate_bad:double
+    - {static} step:double
+    + createBad():AbstractBadAircraft  
+    + {static} setStep(double num):void
+    + {static} UpRate_bad():void
+    + {static} getRate_bad():double
+
+}
+
+class BossFactory{
+    + boss_hp:int
+    + BossFactory(int ahp)
+    + createBad():AbstractBadAircraft    
+}
+
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp> 
+    + update():void
+}
+
+class EliteEnemy{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+class ElitePlusEnemy{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+class Boss{
+    - shootNum:int
+    - power:int
+    - direction:int
+    + Boss(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + update():void
+    + dropProp():List<AbstractProp> 
+}
+
+abstract AbstractBadAircraft{
+    + AbstractBadAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + {abstract} dropProp(): List<AbstractProp>
+}
+
+
+BadAircraftFactory <|.. EliteFactory
+BadAircraftFactory <|.. MobFactory
+BadAircraftFactory <|.. ElitePlusFactory
+BadAircraftFactory <|.. BossFactory
+
+EliteFactory .down.> EliteEnemy:<create>
+MobFactory  .down.> MobEnemy:<create>
+ElitePlusFactory .down.> ElitePlusEnemy:<create>
+BossFactory .down.> Boss:<create>
+
+AbstractBadAircraft <|-up- EliteEnemy
+AbstractBadAircraft <|-up- MobEnemy
+AbstractBadAircraft <|-up- ElitePlusEnemy
+AbstractBadAircraft <|-up- Boss
+
+
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml newuml
+interface DAO_Record{
+    + findByName(String name):void
+    + getAllRecords():LinkedList<Record>
+    + doADD(Record newRecord):void
+    + doDelete(String aname):void
+}
+
+class DAO_Record_Impl{
+    - table:LinkedList<Record>
+    + path:String
+
+    + DAO_Record_Impl(String apath)
+    + doDelete(String aname):void
+    + doDeletebyIndex(int aindex):void
+    + doADD(Record newRecord):void
+    + findByName(String aneme):void
+    + getAllRecords():LinkedList<Record>
+    + toString():String
+    + showAllRecords():void
+    + writeToDat():void
+    - DAO_init():void
+    - sortByScores():void
+}
+
+class Record{
+    - ranking:int
+    - name:String
+    - score:int
+    - time:String
+
+    + Record(int aranking, String aname, int ascore, String atime)
+    + getRanking():int
+    + getName():String
+    + getScore():int
+    + getTime():String
+    + setRanking(int ranking):void
+    + setName(String name):void
+    + setScore(int score):void
+    + setTime(int String):void
+    + toString():String
+}
+
+DAO_Record <|.left. DAO_Record_Impl
+DAO_Record_Impl -left-> Record
+
+@enduml

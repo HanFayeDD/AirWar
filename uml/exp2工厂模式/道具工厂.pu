@@ -1,0 +1,72 @@
+@startuml
+interface PropFactory{
+    + {abstract} createProp(EliteEnemy efly):AbstractProp
+}
+
+class BloodFactory{
+    + createProp(EliteEnemy efly):AbstractProp
+}
+
+class BombFactory{
+    +  createProp(EliteEnemy efly):AbstractProp
+}
+
+class BulletFactory{
+    +  createProp(EliteEnemy efly):AbstractProp
+}
+
+class BulletPlusFactory{
+    +  createProp(EliteEnemy efly):AbstractProp
+}
+
+PropFactory <|.. BloodFactory
+PropFactory <|.. BombFactory
+PropFactory <|.. BulletFactory
+PropFactory <|-- BulletPlusFactory
+
+abstract class AbstractProp
+{   
+    # {static} currentthread:Thread
+    + AbstractProp(int locationX, int locationY, int speedX, int speedY)
+    + forward():void
+    + {abstract} activeProp():void
+}
+
+class Prop_bullet{
+    + Prop_bullet(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void
+}
+
+
+class Prop_bomb{
+    - badthings:List<Badthing>
+    + Prop_blood(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void
+    + addBadthing(Badthing the bad):void
+    + deleteBadthing(Badthing thebad):void
+    + addAll(List<? extends Badthing> badthing_list):void
+    + notifyAllBad():void
+}
+
+class Prop_bulletplus{
+    + Prop_bullet(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void   
+}
+
+class Prop_blood{
+    + Prop_blood(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void   
+}
+
+
+AbstractProp <|-up- Prop_blood
+AbstractProp <|-up- Prop_bomb
+AbstractProp <|-up- Prop_bullet
+AbstractProp <|-up- Prop_bulletplus
+
+BloodFactory .down.> Prop_blood: <create>
+BombFactory .down.> Prop_bomb:<create>
+BulletFactory .down.> Prop_bullet:<create>
+BulletPlusFactory .down.> Prop_bulletplus:<create>
+
+@enduml
