@@ -3,24 +3,33 @@ package edu.hitsz.application;
 import edu.hitsz.factory.*;
 
 public class Game_Tough extends Game{
-    protected int boss_hp;
-    private final double rate_hp;
-    public final double step = 0.01;
-    public final double P_rate = 0.95;
-    public  Game_Tough(){
+    //BOSS的设置
+    protected int boss_hp;//BOSS的血量
+    private final double rate_hp;//每次产生BOSS血量的提升比例
+    //BOSS机外敌机的设置
+    public final double step = 0.01;//敌机属性（血量、速度）提升的倍率步长
+    public final double P_rate = 0.987;//各种敌机产生概率的变化
+    public Game_Tough(){
         super();
         bg_pic = ImageManager.BACKGROUND_IMAGE3;
         //最大敌机数量
-        enemyMaxNumber = 8;
+        enemyMaxNumber = 10;
         //控制BOSS属性变化
-        having_boss = true;
-        boss_score = 70;//BOSS产生的得分阈值
-        boss_hp = 120;
-        rate_hp = 1.2;
-        //控制除BOSS机之外的属性
+        having_boss = true;//在该模式难度下有BOSS产生
+        boss_score = 180;//BOSS产生的得分阈值
+        boss_hp = 200;//BOSS的血量
+        rate_hp = 1.2;//BOSS的血量提升比例
+        //控制除BOSS机之外敌机的属性（血量、速度）变化
         MobFactory.setStep(step);
         EliteFactory.setStep(step);
         ElietePlusFactory.setStep(step);
+        //控制各敌机的概率
+        enemy_1_2 = 0.65;
+        enemy_2_3 = 0.9;
+        //控制敌机的产生和射击频率
+        cycleDuration = 300;
+        //英雄机的射击频率
+        cycleDurationHero = 350;
     }
 
     @Override
@@ -39,9 +48,13 @@ public class Game_Tough extends Game{
         MobFactory.UpRate_bad();
         String result = String.format("%.2f", MobFactory.getRate_bad());
         System.out.println("提高难度！敌机属性(速度、hp)提高倍率"+ result);
+        //更新产生频率：
+//        timeInterval = timeInterval*time_circle_rate
         //依据概率产生相应敌机
-        enemy_1_2 = enemy_1_2*(P_rate-0.02);
-        enemy_2_3 = enemy_2_3*P_rate;
+        if(enemy_1_2>=0.10){
+            enemy_1_2 = enemy_1_2*(P_rate-0.02);
+            enemy_2_3 = enemy_2_3*P_rate;
+        }
         double rand = Math.random();
         String p1 = String.format("%.2f", enemy_1_2);
         String p2 = String.format("%.2f", enemy_2_3-enemy_1_2);
@@ -55,7 +68,7 @@ public class Game_Tough extends Game{
             BadAircraftFactory badfactory = new EliteFactory();
             enemyAircrafts.add(badfactory.createBad());
         }
-        else{
+        else if(enemyAircrafts.size() < enemyMaxNumber){
             BadAircraftFactory badfactory = new ElietePlusFactory();
             enemyAircrafts.add(badfactory.createBad());
         }

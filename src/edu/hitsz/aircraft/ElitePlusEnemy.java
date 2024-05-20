@@ -33,22 +33,22 @@ public class ElitePlusEnemy extends AbstractBadAircraft{
     }
 
     public List<AbstractProp> dropProp(){
-        int which_prop = (int)(Math.random()*100+1)%8;
+        double which_prop = Math.random();
         List<AbstractProp> res = new LinkedList<>();
-        if(which_prop==0){
+        if(which_prop<=0.05){
             PropFactory pf = new BloodFactory();
             res.add(pf.createProp(this));
-        }      
-        else if(which_prop==1){
-            PropFactory pf = new BombFactory();
-            res.add(pf.createProp(this));
         }
-        else if(which_prop==2){
+        else if(which_prop<=0.15){
             PropFactory pf = new BulletFactory();
             res.add(pf.createProp(this));
         }
-        else if(which_prop==3){
+        else if(which_prop<=0.23){
             PropFactory pf = new BulletPlusFactory();
+            res.add(pf.createProp(this));
+        }
+        else if(which_prop<=0.3){
+            PropFactory pf = new BombFactory();
             res.add(pf.createProp(this));
         }
         return res;

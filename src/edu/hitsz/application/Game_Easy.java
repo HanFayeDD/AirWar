@@ -9,8 +9,10 @@ public class Game_Easy extends Game{
     public Game_Easy(){
         super();
         bg_pic = ImageManager.BACKGROUND_IMAGE;
-        enemyMaxNumber = 4;
+        enemyMaxNumber = 5;
         having_boss = false;
+        cycleDuration = 500;
+        cycleDurationHero = 400;
 
     }
 

@@ -1,0 +1,97 @@
+@startuml 观察者模式
+skinparam dpi 400
+interface Badthing{
+    + {abstract} update():void 
+}
+
+abstract BaseBullet{
+    - power:int
+    + BaseBullet(int locationX, int locationY, int speedX, int speedY, int power)
+    + forward() @Override:void
+	+ getPower():int
+}
+
+
+class EnemyBullet {
+    + EnemyBullet(int locationX, int locationY,int speedX, int speedY, int power)
+    + update() @Override:void
+}
+
+class HeroBullet{
+    + HeroBullet(int locationX, int locationY, int speedX, int speedY, int power)
+    + update() @Override:void
+}
+
+abstract AbstractBadAircraft{
+    + AbstractBadAircraft(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + {abstract} dropProp():List<AbstractProp>
+}
+
+class MobEnemy {
+    + MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp>
+    + update():void
+}
+
+class EliteEnemy{
+    + EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp>
+    + update():void
+}
+
+class ElitePlusEnemy{
+    + ElitePlusEnemy(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp>
+    + update():void
+}
+
+class Boss{
+    - direction:int
+    - shootNum:int
+    - power:int
+    + Boss(int locationX, int locationY, int speedX, int speedY, int hp, Strategy ashoot_way)
+    + forward():void
+    + shoot():List<BaseBullet>
+    + dropProp():List<AbstractProp>
+    + update():void
+}
+
+class Prop_Bomb{
+    - badthings:List<Badthing>
+    + Prop_blood(int locationX, int locationY, int speedX, int speedY)
+    + activeProp():void
+    + addBadthing(Badthing the bad):void
+    + deleteBadthing(Badthing thebad):void
+    + addAll(List<? extends Badthing> badthing_list):void
+    + notifyAllBad():void
+}
+
+class Game{
+}
+
+Badthing <|.left. BaseBullet
+BaseBullet <|-- EnemyBullet
+BaseBullet <|-- HeroBullet
+
+Badthing <|.right.  AbstractBadAircraft
+AbstractBadAircraft <|-up- MobEnemy
+AbstractBadAircraft <|-up- EliteEnemy
+AbstractBadAircraft <|-- ElitePlusEnemy
+AbstractBadAircraft <|-- Boss
+
+Prop_Bomb o--> Badthing
+
+Game ..> Prop_Bomb
+
+
+
+
+
+
+@enduml

@@ -25,38 +25,36 @@ import java.util.concurrent.*;
  * @author hitsz
  */
 public abstract class Game extends JPanel {
-
     private int backGroundTop = 0;
     //模式选择
     private static int pattern = -1;
-
+    //游戏结束后存储输入的玩家姓名
     private static String playername = "";
     /**
      * Scheduled 线程池，用于任务调度
      */
     private final ScheduledExecutorService executorService;
+
+    /**
+     * 控制除BOSS外三种敌机的概率
+     * 产生普通敌机的概率是enemy_1_2
+     * 产生Elite敌机的概率是enemy_2_3 - enemy_1_2
+     * 产生Elite_plus的概率是1 - enemy_2_3
+     */
+    protected double enemy_1_2 = 0.7;//0.7的概率是普通敌机
+    protected double enemy_2_3 = 0.9;//0.2的概率是Elite,0.1是Eliteplus
     /**
      * 时间间隔(ms)，控制刷新频率
      */
-    protected double enemy_1_2 = 0.6;//0.5的概率是普通敌机
-    protected double enemy_2_3 = 0.9;//0.3的概率是Elite,0.2是plus
-
-
-    private int timeInterval = 40;
-
+    protected int timeInterval = 30;
+    //该难度是否产生BOSS机
     protected boolean having_boss = true;
-
+    //游戏过程中产生的对象
     protected final HeroAircraft heroAircraft;
     protected final List<AbstractBadAircraft> enemyAircrafts;
     protected final List<BaseBullet> heroBullets;
     protected final List<BaseBullet> enemyBullets;
     protected final List<AbstractProp> props;
-
-    /**
-     * k控制产生机型数量的变量
-     */
-
-
     /**
      * 屏幕中出现的敌机最大数量
      */
@@ -73,29 +71,40 @@ public abstract class Game extends JPanel {
     /**
      * Boss是否被消灭，一个时间内只能有一个boss机
      */
-    private static  boolean boss_destroyed = true;
+    private boolean boss_destroyed = true;
     /**
-     * Boss被消灭后累积的得分
+     * Boss被消灭后累积的得分，用此来跟产生BOSS机的得分阈值比较，
+     * 来判断是否产生BOSS机
      */
     private int add_score = 0;
     /**
-     * 产生Boss机的累积得分上界，只在boss机消灭的时候计数
+     * 产生Boss机的得分阈值
      */
     protected int boss_score = 50;
     /**
      * 周期（ms)
-     * 指示子弹的发射、敌机的产生频率
+     * 指示敌机子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 600;
+    protected int cycleDuration = 500;
+    /**
+     * 周期(ms)
+     * 指示英雄机的子弹发射频率
+     */
+    protected int cycleDurationHero = 500;
     private int cycleTime = 0;
+    private int cycleTimeHero = 0;
 
     /**
      * 游戏结束标志
      */
     private static  boolean gameOverFlag = false;
-
+    /**
+     * 游戏背景图片
+     */
     protected BufferedImage bg_pic;
-
+    /**
+     * 音效开关与否
+     */
     private static boolean music_on = true;
 
     public Game() {
@@ -142,7 +151,7 @@ public abstract class Game extends JPanel {
     /**
      * 游戏启动入口，执行游戏逻辑
      */
-    public void action() {
+    public final void action() {
         MusicThread bgm = new MusicThread(MusicManager.BGM);
         bgm.notEXIT();
         MusicThread bgm_boss = new MusicThread(MusicManager.BGM_BOSS);
@@ -178,7 +187,7 @@ public abstract class Game extends JPanel {
                 }
             }
 
-            // 周期性执行（控制频率）
+            // 周期性执行（控制频率）敌机的射击和产生
             if (timeCountAndNewCycleJudge()) {
                 System.out.println(time);
                 // 新敌机产生
@@ -187,6 +196,10 @@ public abstract class Game extends JPanel {
                 shootAction();
             }
 
+            //英雄机的射击
+            if(timeCountAndNewCycleJudgeHero()){
+                shootActionHero();
+            }
 
             // 子弹移动
             bulletsMoveAction();
@@ -258,11 +271,25 @@ public abstract class Game extends JPanel {
         }
     }
 
+    private boolean timeCountAndNewCycleJudgeHero() {
+        cycleTimeHero += timeInterval;
+        if (cycleTimeHero >= cycleDurationHero && cycleTimeHero - timeInterval < cycleTimeHero) {
+            // 跨越到新的周期
+            cycleTimeHero %= cycleDurationHero;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private void shootAction() {
         // TODO 敌机射击
         for(AbstractAircraft el : enemyAircrafts){
             enemyBullets.addAll(el.shoot());
         }
+    }
+
+    private void shootActionHero() {
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
     }
@@ -494,7 +521,7 @@ public abstract class Game extends JPanel {
         int y = 25;
         g.setColor(new Color(16711680));
         g.setFont(new Font("SansSerif", Font.BOLD, 22));
-        g.drawString("SCORE:" + this.score, x, y);
+        g.drawString("SCORE:" + score, x, y);
         y = y + 20;
         g.drawString("LIFE:" + this.heroAircraft.getHp(), x, y);
     }

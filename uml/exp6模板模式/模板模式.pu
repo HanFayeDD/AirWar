@@ -1,0 +1,85 @@
+@startuml 模板模式
+abstract Game{
+    - backGroundTop:int
+    - {static} pattern:int
+    - {static} playername:String
+    # enemy_1_2:double
+    # enemy_2_3:double
+    # timeInterval:int
+    # having_boss:boolean
+    - boss_destroyed:boolean
+    - add_score:int
+    # boss_score:int
+    # heroAircraft:HeroAircraft
+    # enemyAircrafts:List<AbstractBadAircraft> 
+    # heroBullets:List<BaseBullet>
+    # enemyBullets:List<BaseBullet>
+    # props:List<AbstractProp> 
+    # enemyMaxNumber:int
+    # {static} score:int
+    - time:int
+    # cycleDuration:int
+    - cycleTime:int
+    # cycleDurationHero:int
+    - cycleTimeHero:int
+    - {static} gameOverFlag:boolean
+    # bg_pic:BufferedImage
+    - {static} music_on:boolean
+
+    + Game()
+    + {static}setMusic_on(boolean choice):void
+    + {static}getgameOverFlag():boolean
+    + {static}getScore():int
+    + {static}getPattern():int
+    + setPattern(int i):void
+    + action():void
+    + {abstract}generate_BOSS():void
+    + {abstract}generate_Other_Bad()
+    + {static} addscore(int addnum):void
+    - timeCountAndNewCycleJudge():boolean
+    - timeCountAndNewCycleJudgeHero():boolean
+    - shootAction():void
+    - shootActionHero():void
+    - bulletsMoveAction():void
+    - aircraftsMoveAction():void
+    - propsMoveAction():void
+    - {static}getPlayername():String
+    -  crashCheckAction():void
+    - postProcessAction():void
+    + paint(Graphics g):void
+    - paintEnemyBar(Graphics g, List<? extends AbstractBadAircraft> objects):void
+    - paintHeroBar(Graphics g):void 
+    - paintImageWithPositionRevised(Graphics g, List<? extends AbstractFlyingObject> objects):void
+    - paintScoreAndLife(Graphics g):void
+}
+
+class Game_Easy{
+    + Game_Easy()
+    + generate_BOSS():void
+    + generate_Other_Bad():void
+}
+
+class Game_Noraml{
+    # boss_hp:int
+    + step:double
+    + P_rate:double
+    + Game_Noraml()
+    + generate_BOSS():void
+    + generate_Other_Bad():void
+}
+
+class Game_Tough{
+    # boss_hp:int
+    - rate-hp:int
+    + step:double
+    + P_rate:double
+    + Game_Tough()
+    + generate_BOSS():void
+    + generate_Other_Bad():void
+}
+
+Game <|-- Game_Easy
+Game <|-- Game_Noraml 
+Game <|-- Game_Tough
+
+@enduml
