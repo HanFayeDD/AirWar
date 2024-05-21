@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Begin {
+public class Begin{
     private JPanel mainPanel;
     private JButton easyPattern;
     private JButton normalPattern;
@@ -36,6 +36,7 @@ public class Begin {
         easyPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ((BackgroundPanel) mainPanel).stopTask();
                 Game game = new Game_Easy();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);
@@ -46,6 +47,7 @@ public class Begin {
         normalPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ((BackgroundPanel) mainPanel).stopTask();
                 Game game = new Game_Normal();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);
@@ -56,6 +58,7 @@ public class Begin {
         toughPattern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ((BackgroundPanel) mainPanel).stopTask();
                 Game game = new Game_Tough();
                 Main.cardPanel.add(game);
                 Main.cardLayout.last(Main.cardPanel);

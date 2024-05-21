@@ -35,10 +35,12 @@ public class Game_Normal extends Game{
     @Override
     public void generate_Other_Bad() {
         // 新敌机产生
-        //更新倍率
-        EliteFactory.UpRate_bad();
-        ElietePlusFactory.UpRate_bad();
-        MobFactory.UpRate_bad();
+        //更新倍率(倍率小于1.8才更新)
+        if (MobFactory.rate_bad <= 1.8){
+            EliteFactory.UpRate_bad();
+            ElietePlusFactory.UpRate_bad();
+            MobFactory.UpRate_bad();
+        }
         String result = String.format("%.3f", MobFactory.getRate_bad());
         System.out.println("提高难度！敌机属性(速度、hp)提高倍率"+ result);
         //依据倍率产生相关敌机

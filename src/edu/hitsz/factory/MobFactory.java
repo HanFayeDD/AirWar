@@ -6,7 +6,7 @@ import edu.hitsz.application.ImageManager;
 import edu.hitsz.aircraft.*;
 
 public class MobFactory implements BadAircraftFactory{
-    private static double rate_bad = 1;
+    public static double rate_bad = 1;
     private static double step = 0.2;
     public AbstractBadAircraft createBad(){
         return new MobEnemy(
