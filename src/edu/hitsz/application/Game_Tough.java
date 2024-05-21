@@ -7,7 +7,7 @@ public class Game_Tough extends Game{
     protected int boss_hp;//BOSS的血量
     private final double rate_hp;//每次产生BOSS血量的提升比例
     //BOSS机外敌机的设置
-    public final double step = 0.01;//敌机属性（血量、速度）提升的倍率步长
+    public final double step = 0.007;//敌机属性（血量、速度）提升的倍率步长
     public final double P_rate = 0.987;//各种敌机产生概率的变化
     public Game_Tough(){
         super();
@@ -16,7 +16,7 @@ public class Game_Tough extends Game{
         enemyMaxNumber = 10;
         //控制BOSS属性变化
         having_boss = true;//在该模式难度下有BOSS产生
-        boss_score = 180;//BOSS产生的得分阈值
+        boss_score = 150;//BOSS产生的得分阈值
         boss_hp = 200;//BOSS的血量
         rate_hp = 1.2;//BOSS的血量提升比例
         //控制除BOSS机之外敌机的属性（血量、速度）变化
@@ -50,9 +50,6 @@ public class Game_Tough extends Game{
         }
         String result = String.format("%.2f", MobFactory.getRate_bad());
         System.out.println("提高难度！敌机属性(速度、hp)提高倍率"+ result);
-        //更新产生频率：
-//        timeInterval = timeInterval*time_circle_rate
-        //依据概率产生相应敌机
         if(enemy_1_2>=0.15){
             enemy_1_2 = enemy_1_2*(P_rate-0.02);
             enemy_2_3 = enemy_2_3*P_rate;
